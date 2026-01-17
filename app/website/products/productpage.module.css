@@ -1,0 +1,133 @@
+.pageContainer {
+  padding: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  background: #f9fafb;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+/* left: gallery */
+.galleryWrapper {
+  flex: 1;
+  min-width: 320px;
+  max-width: 450px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.galleryWrapper:hover {
+  transform: translateY(-4px);
+}
+
+/* right: product details */
+.detailsWrapper {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* title & description */
+.productInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.productTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.2;
+}
+
+.productDescription {
+  font-size: 1rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.productAbout {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+/* rating & price */
+.productPricing {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.oldPrice {
+  font-size: 1rem;
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.finalPrice {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+/* add to cart button */
+.addToCart {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  /* background: #2563eb; */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.addToCart:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
+}
+
+/* .addToCart:active {
+  transform: scale(0.97);
+} */
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pageContainer {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .galleryWrapper,
+  .detailsWrapper {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .productTitle {
+    font-size: 1.6rem;
+  }
+
+  .finalPrice {
+    font-size: 1.4rem;
+  }
+}

@@ -1,0 +1,56 @@
+.serchcontainer {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Top search */
+.searchpage {
+  display: flex;
+  gap: 12px;
+}
+
+/* Filters */
+.filtersearch {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Products grid */
+.productscontainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Prevent link stretching cards */
+.productscontainer a {
+  width: fit-content;
+  justify-self: center;
+  text-decoration: none;
+}
+
+/* Empty state */
+.emptyState {
+  text-align: center;
+  padding: 40px;
+  color: #777;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 30px;
+  color: #555;
+  font-size: 14px;
+}
+.resultCount {
+  font-size: 13px;
+  color: #666;
+  margin-top: 8px;
+}
+

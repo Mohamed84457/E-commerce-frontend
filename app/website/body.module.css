@@ -1,0 +1,83 @@
+#bodycommerce {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Hero */
+.hero {
+  position: relative;
+  height: 420px;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* Image container */
+.heroImage {
+  position: absolute;
+  inset: 0;
+}
+
+.heroImg {
+  object-fit: cover;
+  filter: brightness(0.55);
+}
+
+/* Content on top */
+.heroContent {
+  position: relative;
+  z-index: 2;
+  padding: 40px;
+  max-width: 600px;
+  color: #fff;
+}
+
+.title {
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.subtitle {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 12px 0 20px;
+  color: #eaeaea;
+}
+
+.exploreBtn {
+  background-color: #1772db;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  padding: 10px 26px;
+  font-weight: 600;
+  text-transform: none;
+  transition: all .3s ease;
+}
+.exploreBtn:hover{
+transform: translateY(-4px);
+
+}
+.exploreBtn:active{
+  transform: scale(.9);
+}
+
+/* Categories */
+#categoriescommerc {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.moreLink {
+  font-size: 14px;
+  color: #1976d2;
+  cursor: pointer;
+  align-self: center;
+}

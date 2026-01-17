@@ -1,0 +1,4 @@
+export const NEXT_PUBLIC_SUPABASE_URL =
+  "https://mndxiqetauidfyfiykci.supabase.co";
+export const NEXT_PUBLIC_SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1uZHhpcWV0YXVpZGZ5Zml5a2NpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjY1OTI0ODAsImV4cCI6MjA4MjE2ODQ4MH0.dj0PvZsBSZs5sO1UiMjvutAHYMfUSKN54sUeEsLqMvU";

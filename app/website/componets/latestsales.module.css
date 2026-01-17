@@ -1,0 +1,48 @@
+.wrapper {
+  margin: 40px auto;
+  padding: 0 20px;
+  max-width: 1300px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.heading {
+  font-size: 26px;
+  font-weight: 700;
+  color: #111;
+}
+
+.subHeading {
+  font-size: 14px;
+  color: #666;
+  margin-top: 6px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+}
+
+.cardLink:focus-visible {
+  outline: 2px solid #000;
+  border-radius: 10px;
+}
+
+.empty {
+  font-size: 15px;
+  color: #888;
+}
+
+.starIcon {
+  color: #e8a317;
+  margin-right: 6px;
+  vertical-align: middle;
+}

@@ -1,0 +1,131 @@
+.ordercom {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: solid 1px #000;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px;
+  transition: 0.3s all ease;
+}
+.ordercom > div {
+  position: relative;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.ordercom > div:hover {
+  background-color: #d3d1d13a;
+}
+
+.orderprogress {
+  display: flex;
+  align-items: center;
+  margin: 5px 0px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.orderprogress > button {
+  background-color: transparent;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+}
+.orderprogress > button:hover {
+  background-color: #8c89896c;
+  transform: translateY(-4px);
+}
+.orderprogress > button:active {
+  transform: scale(0.9);
+}
+
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+
+.inpt {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.inpt > button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  color: #1560c2;
+  transition: 0.3s all ease;
+}
+.inpt > button:hover {
+  transform: rotate(25deg) scale(1.1);
+  cursor: pointer;
+}
+.inpt > button:active {
+  transform: scale(0.9);
+}
+
+.btnposition {
+  position: absolute;
+  top: 2px;
+  right: 5px;
+  background-color: transparent;
+  border: none;
+  color: #ec740c;
+
+  transition: 0.3s all ease;
+}
+.btnposition:hover {
+  cursor: pointer;
+  transform: translateY(-4px) scale(1.1);
+}
+.btnposition:active {
+  transform: scale(0.9);
+}
+
+.num {
+  color: #b98235;
+}
+
+.item {
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  position: relative;
+}
+.deleteBtn {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  background-color: transparent;
+  border: none;
+  color: #f70e0e;
+  transition: 0.3s all ease;
+}
+.deleteBtn:hover {
+  transform: translateY(-4px) scale(1.1);
+  cursor: pointer;
+}
+.deleteBtn:active {
+  transform: scale(0.9);
+}
+
+
+.deleteorderBtn{
+  border: none;
+  background-color: #e20a0a;
+  color: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px #000;
+  transition: .3s all ease;
+}
+.deleteorderBtn:hover{
+  transform: translateY(-2px);
+  cursor: pointer;
+}
+.deleteorderBtn:active{
+  transform: scale(.9);
+}

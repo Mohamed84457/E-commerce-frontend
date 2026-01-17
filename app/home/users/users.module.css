@@ -1,0 +1,36 @@
+.thStyle {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+.tdStyle {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+.row {
+  background-color: #ffffff;
+}
+
+.rowAlt {
+  background-color: #f9f9f9;
+}
+
+#iconuser {
+  color: #0d81e0;
+  font-size: 35px;
+  padding: 5px;
+  border-radius: 50%;
+}
+#iconuser:hover {
+  cursor: pointer;
+  background-color: #c3b7b782;
+}
+
+#buttonaAddUser {
+  background-color: #2a7aea;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 2000;
+}

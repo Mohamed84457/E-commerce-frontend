@@ -1,0 +1,54 @@
+.containerpagetopnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+  padding: 0px 20px;
+  background-color: white;
+  border-bottom: 1px solid #ccc;
+
+  box-shadow: 0px 0px 10px #918c8c;
+  border-radius: 0px 0px 10px 10px;
+  z-index: 1000;
+}
+
+
+/* maincontainer should be full screen height */
+.maincontainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Flex container holding sidebar + content */
+.children_sidebar {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* Sidebar: fixed width, fixed position */
+.sidebar {
+  width: 250px; /* or whatever width you want */
+  height: 100vh;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  border-right: solid 1px #9e9898ff;
+  border-top: solid 1px #9e9898ff;
+  padding: 10px 15px 10px 10px;
+  background-color: white; /* optional, avoid see-through */
+  /* keep it above */
+  border-radius: 0px 10px 10px 0px;
+  box-shadow: 0px 0px 10px #918c8c;
+  transition: .3s all ease;
+}
+
+/* Content: pushed right to make room for sidebar */
+.content {
+  /* margin-left: 250px; match sidebar width */
+  flex-grow: 1;
+  padding: 10px;
+  overflow-y: auto;
+  height: calc(100vh - 50px); /* adjust if Pagetopnav is 50px */
+}

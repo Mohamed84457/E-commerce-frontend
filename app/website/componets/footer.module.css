@@ -1,0 +1,101 @@
+/* footer.module.css */
+
+/* Main footer container */
+.footer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  padding: 40px 20px;
+  background-color: #284428; /* DMT brand blue */
+  color: #fff;
+  font-family: "Arial", sans-serif;
+}
+
+/* General link styles */
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: #22c55e; /* DMT green hover */
+}
+
+/* Logo section */
+.logoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.tagline {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* Links section */
+.linksSection h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.linksSection ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.linksSection li {
+  margin: 5px 0;
+}
+
+/* Social media section */
+.socialSection h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.socialIcons {
+  display: flex;
+  gap: 10px;
+}
+
+.socialIcons img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1); /* white icons */
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.socialIcons img:hover {
+  transform: scale(1.1);
+  filter: invert(0.6) sepia(0.5) saturate(3) hue-rotate(120deg); /* subtle hover color */
+}
+
+/* Copyright text */
+.copyright {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .footer {
+    gap: 20px;
+    padding: 30px 15px;
+  }
+
+  .logoSection {
+    align-items: center;
+    text-align: center;
+  }
+
+  .linksSection ul, .socialSection {
+    justify-content: center;
+  }
+}
