@@ -41,15 +41,13 @@ export default function Addproduct() {
   // send new one
   const [send, setsend] = useState(false);
   const dummy = {
-  title: "dummy",
-  description: "dummy",
-  price: 200,
-  discount: 0,
-  About: "about",
-  category: 1, // <-- set a valid category id
-  stock: 1,    // <-- set a default stock value
-};
-
+    title: "dummy",
+    category: 1,
+    description: "dummy",
+    price: 200,
+    discount: 0,
+    About: "about",
+  };
 
   const [images, setimages] = useState([]);
 
