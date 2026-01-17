@@ -42,14 +42,13 @@ export default function Addproduct() {
   const [send, setsend] = useState(false);
   const dummy = {
     title: "dummy",
-    category: 1,
+    category: 1, // must be a number
     description: "dummy",
-    price: 200,
-    discount: 0,
+    price: 200, // must be number
+    discount: 0, // must be number
     About: "about",
-    stock: 1,  // add this
-};
-
+    stock: 10, // must be number
+  };
 
   const [images, setimages] = useState([]);
 
@@ -150,6 +149,8 @@ export default function Addproduct() {
 
   // make new product
   async function handelmakenewproduct(e) {
+        console.log(e.target.value)
+
     setproductdata({
       ...productdata,
       category: e.target.value,
@@ -164,10 +165,11 @@ export default function Addproduct() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
             },
           }
         );
-        
+
         setproductid(res.data.id);
         console.log(res.data.id);
       } catch (err) {
@@ -356,7 +358,7 @@ export default function Addproduct() {
               !productdata.description ||
               !productdata.About ||
               !productdata.stock ||
-              productdata.stock<0||
+              productdata.stock < 0 ||
               loading
             }
             onClick={() => {
