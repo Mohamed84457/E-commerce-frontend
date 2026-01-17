@@ -2,7 +2,7 @@
 import Cookies from "universal-cookie";
 import { useRouter } from "next/navigation";
 // components
-import Profilenavwebsite from "../website/componets/profilenavwebsite";
+// import Profilenavwebsite from "../website/componets/profilenavwebsite";
 // contexts
 import { useUserdata } from "../context/userdatacontext";
 
@@ -45,10 +45,5 @@ export default function Layout({ children }) {
         router.push("/signUp");
       });
   }, []);
-  return (
-    <div>
-      <Profilenavwebsite />
-      {children}
-    </div>
-  );
+  return <div>{children}</div>;
 }
