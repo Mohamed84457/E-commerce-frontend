@@ -40,7 +40,6 @@ export default function Addproduct() {
   const [productid, setproductid] = useState();
   // send new one
   const [send, setsend] = useState(false);
-  
 
   const [images, setimages] = useState([]);
 
@@ -149,13 +148,13 @@ export default function Addproduct() {
         const res = await axios.post(
           `${NEXT_PUBLIC_API_URL}/api/product/add`,
           {
-            title: "draft",
-            description: "draft",
-            price: 0,
-            discount: 0,
-            About: "draft",
-            stock: 0,
-            category: selectedCategory,
+            title: "dummy",
+            description: "dummy",
+            price: 10,
+            discount: 10,
+            About: "dummy",
+            stock: 10,
+            category: 1,
           },
           {
             headers: {
