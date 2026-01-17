@@ -53,7 +53,7 @@ export default function Products() {
           }
         ),
       ]);
-
+console.log(productsRes.data)
       setCategories(categoriesRes.data.data);
       setProducts(productsRes.data.data);
       setTotal(productsRes.data.total);

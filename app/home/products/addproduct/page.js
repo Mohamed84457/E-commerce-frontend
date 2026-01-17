@@ -41,13 +41,15 @@ export default function Addproduct() {
   // send new one
   const [send, setsend] = useState(false);
   const dummy = {
-    title: "dummy",
-    category: null,
-    description: "dummy",
-    price: 200,
-    discount: 0,
-    About: "about",
-  };
+  title: "dummy",
+  description: "dummy",
+  price: 200,
+  discount: 0,
+  About: "about",
+  category: 1, // <-- set a valid category id
+  stock: 1,    // <-- set a default stock value
+};
+
 
   const [images, setimages] = useState([]);
 
@@ -165,8 +167,9 @@ export default function Addproduct() {
             },
           }
         );
+        
         setproductid(res.data.id);
-        console.log(res.data);
+        console.log(res.data.id);
       } catch (err) {
         console.log(err);
       }
