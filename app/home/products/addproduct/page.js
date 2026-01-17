@@ -40,15 +40,7 @@ export default function Addproduct() {
   const [productid, setproductid] = useState();
   // send new one
   const [send, setsend] = useState(false);
-  const dummy = {
-    title: "dummy",
-    category: 1, // must be a number
-    description: "dummy",
-    price: 200, // must be number
-    discount: 0, // must be number
-    About: "about",
-    stock: 10, // must be number
-  };
+  
 
   const [images, setimages] = useState([]);
 
@@ -149,19 +141,22 @@ export default function Addproduct() {
 
   // make new product
   async function handelmakenewproduct(e) {
-        console.log(e.target.value)
-
-    setproductdata({
-      ...productdata,
-      category: e.target.value,
-    });
+    const selectedCategory = e.target.value;
 
     if (!send) {
       const token = Cookie.get("ecommercetoken");
       try {
         const res = await axios.post(
           `${NEXT_PUBLIC_API_URL}/api/product/add`,
-          dummy,
+          {
+            title: "draft",
+            description: "draft",
+            price: 0,
+            discount: 0,
+            About: "draft",
+            stock: 0,
+            category: selectedCategory,
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -173,7 +168,7 @@ export default function Addproduct() {
         setproductid(res.data.id);
         console.log(res.data.id);
       } catch (err) {
-        console.log(err);
+        console.log(err.response.data.errors);
       }
     }
     setsend(true);
