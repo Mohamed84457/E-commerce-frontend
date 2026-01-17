@@ -154,7 +154,7 @@ export default function Addproduct() {
             discount: 10,
             About: "dummy",
             stock: 10,
-            category: 1,
+            category: selectedCategory,
           },
           {
             headers: {
@@ -163,7 +163,7 @@ export default function Addproduct() {
             },
           }
         );
-
+        setproductdata({ ...productdata, category: selectedCategory });
         setproductid(res.data.id);
         console.log(res.data.id);
       } catch (err) {
