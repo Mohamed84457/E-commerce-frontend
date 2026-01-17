@@ -47,7 +47,9 @@ export default function Addproduct() {
     price: 200,
     discount: 0,
     About: "about",
-  };
+    stock: 1,  // add this
+};
+
 
   const [images, setimages] = useState([]);
 
