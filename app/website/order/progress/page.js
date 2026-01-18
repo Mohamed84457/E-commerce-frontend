@@ -136,7 +136,7 @@ export default function Progress() {
   }
   // ===make order===
   return (
-    <div>
+    <div className={styles.progresscontainer}>
       {loading ? (
         <div>loading...</div>
       ) : orderitems.length < 1 ? (

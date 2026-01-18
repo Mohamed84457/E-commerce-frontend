@@ -1,6 +1,4 @@
-import Image from "next/image";
 import styles from "./Categorycommercecard.module.css";
-
 export default function Categorycommercecard({ cat, onClick }) {
   if (!cat) return null;
 
@@ -12,17 +10,15 @@ export default function Categorycommercecard({ cat, onClick }) {
       onClick={onClick}
       onKeyDown={(e) => e.key === "Enter" && onClick?.()}
     >
-      <Image
+      <img
         src={cat.image || "/placeholder.jpg"}
         alt={cat.title || "category"}
-        fill
+        width={640}
+        height={480}
         className={styles.image}
-        priority
       />
 
-      <div className={styles.title}>
-        {cat.title || "Category"}
-      </div>
+      <div className={styles.title}>{cat.title || "Category"}</div>
     </div>
   );
 }

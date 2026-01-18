@@ -116,7 +116,7 @@ export default function Addproduct() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
       console.log("success");
       console.log(res.data);
@@ -161,7 +161,7 @@ export default function Addproduct() {
               Authorization: `Bearer ${token}`,
               "Content-Type": "application/json",
             },
-          }
+          },
         );
         setproductdata({ ...productdata, category: selectedCategory });
         setproductid(res.data.id);

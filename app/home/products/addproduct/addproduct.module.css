@@ -1,28 +1,26 @@
 .container {
   height: 100vh;
-
+  background-color: #fff;
 }
-.container h2{
-    text-transform: capitalize;
-    letter-spacing: 2px;
-    
-}
-
-.formcontainer{
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
+.container h2 {
+  text-transform: capitalize;
+  letter-spacing: 2px;
 }
 
-
-.upload{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    border: dashed 2px #2a83c2;
-    cursor: pointer;
+.formcontainer {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: dashed 2px #2a83c2;
+  cursor: pointer;
+}
+

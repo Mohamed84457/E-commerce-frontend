@@ -1,0 +1,44 @@
+.topnav {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.navLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.navLogo h4 {
+  color: #4b0082;
+  margin: 0;
+}
+
+.navLogo h6 {
+  color: #4db6ac;
+  margin: 0;
+}
+
+.navbuttons {
+  display: flex;
+  gap: 16px;
+}
+
+.signupButton {
+  background-color: #4db6ac;
+  color: #fff;
+  font-weight: 600;
+  text-transform: none;
+  transition: 0.2s all ease;
+}
+
+.signupButton:hover {
+  background-color: #3aa795;
+}
