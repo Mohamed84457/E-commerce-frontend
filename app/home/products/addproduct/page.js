@@ -58,7 +58,7 @@ export default function Addproduct() {
 
     async function getcategories() {
       try {
-        const res = await axios.get(`${NEXT_PUBLIC_API_URL}/api/categories`, {
+        const res = await axios.get(`${NEXT_PUBLIC_API_URL}/api/allcategories`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
