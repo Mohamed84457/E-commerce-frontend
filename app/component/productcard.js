@@ -167,7 +167,7 @@ export default function Productcard({ product, makeaction, categories=[] }) {
       {/* Product Images */}
 
       <div className={styles.imagecontainer}>
-        <Image
+        <img
           src={
             product.images.length > 0
               ? product.images[currentImage].image
@@ -178,13 +178,13 @@ export default function Productcard({ product, makeaction, categories=[] }) {
           width={400}
           height={400}
           sizes="(max-width: 768px) 100vw, 400px"
-          priority
+          loading="lazy"
         />
         <h3 className={styles.productName}>{product.title}</h3>
 
         <div className={styles.thumbnailRow}>
           {product.images.map((img, index) => (
-            <Image
+            <img
               key={index}
               src={img.image}
               width={80}
@@ -412,7 +412,7 @@ export default function Productcard({ product, makeaction, categories=[] }) {
           <div>
             {images.map((img) => (
               <div key={img.name} className={styles.imagePreview}>
-                <Image
+                <img
                   src={URL.createObjectURL(img)}
                   width={80}
                   height={80}
@@ -460,7 +460,7 @@ export default function Productcard({ product, makeaction, categories=[] }) {
         <DialogContent>
           {product.images.map((old) => (
             <div key={old.id} className={styles.imagePreview}>
-              <Image
+              <img
                 src={old.image}
                 width={80}
                 height={80}
