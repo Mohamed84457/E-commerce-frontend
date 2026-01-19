@@ -1,212 +1,174 @@
 "use client";
-// mui
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
-// components
-import Productcommercecard from "../website/componets/productcommercecard";
 
+import {
+  Box,
+  Button,
+  TextField,
+  Autocomplete,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import Image from "next/image";
-import styles from "./searchpage.module.css";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import { NEXT_PUBLIC_API_URL } from "../publicurl/URLbase";
 import Link from "next/link";
-export default function Searchpage() {
-  // searched products
-  const [searchedproducts, setsearchedproducts] = useState([]);
-  const [totalproducts, settotalproducts] = useState(0);
+import axios from "axios";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-  // search by data
-  const [searchdata, setsearchdata] = useState({
-    productnamesearch: "",
-    categorysearch: "",
-    maxprice: "",
-    minprice: "",
+import Productcommercecard from "../website/componets/productcommercecard";
+import { NEXT_PUBLIC_API_URL } from "../publicurl/URLbase";
+import styles from "./searchpage.module.css";
+
+export default function Searchpage() {
+  const [products, setProducts] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  const [filters, setFilters] = useState({
+    q: "",
+    category: "",
+    min_price: "",
+    max_price: "",
   });
 
-  // loading
-  const [loading, setloading] = useState(false);
-  const [categoriesloading, setcategoriesloading] = useState(true);
-  // categories
-  const [categories, setcategories] = useState([]);
-  //   get categories
-
+  // 🔹 Fetch categories
   useEffect(() => {
-    async function getcategories() {
+    async function fetchCategories() {
       try {
-        const res = await axios.get(
-          `${NEXT_PUBLIC_API_URL}/api/categories?limit=50`
-        );
-        setcategories(res.data.data);
-      } catch (error) {
-        console.log(error);
+        const res = await axios.get(`${NEXT_PUBLIC_API_URL}/api/allcategories`);
+        setCategories(res.data.data || []);
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setCategoriesLoading(false);
       }
-      setcategoriesloading(false);
     }
-    getcategories();
+    fetchCategories();
   }, []);
-  function changestate(name, value) {
-    setsearchdata((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-  // search
-  const confirmsearchedproduct = useCallback(async () => {
-    setloading(true);
+
+  // 🔹 Search function
+  const searchProducts = useCallback(async () => {
+    if (!filters.q) return;
+
+    setLoading(true);
     try {
       const res = await axios.get(
         `${NEXT_PUBLIC_API_URL}/api/products/search`,
-        {
-          params: {
-            q: searchdata.productnamesearch,
-            category: searchdata.categorysearch,
-            min_price: searchdata.minprice,
-            max_price: searchdata.maxprice,
-          },
-        }
+        { params: filters }
       );
-      setsearchedproducts(res.data.data);
-      settotalproducts(res.data.total);
-    } catch (error) {
-      console.log(error);
+      setProducts(res.data.data);
+      setTotal(res.data.total);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-    setloading(false);
-  }, [searchdata]);
+  }, [filters]);
 
-  // handel serach
-  function handelclicksearch() {
-    confirmsearchedproduct();
-  }
-  // mapping searched products
-  const mappingsearchedproducts = useMemo(() => {
-    return searchedproducts.map((p) => {
-      return (
+  // 🔹 Debounce filters
+  useEffect(() => {
+    const timer = setTimeout(searchProducts, 500);
+    return () => clearTimeout(timer);
+  }, [filters.category, filters.min_price, filters.max_price]);
+
+  const productList = useMemo(
+    () =>
+      products.map((p) => (
         <Link key={p.id} href={`/website/products/${p.id}`}>
           <Productcommercecard pro={p} />
         </Link>
-      );
-    });
-  }, [searchedproducts]);
-  // filtring
-  useEffect(() => {
-    if (!searchdata.productnamesearch) return;
-
-    const timer = setTimeout(() => {
-      confirmsearchedproduct();
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchdata.categorysearch, searchdata.minprice, searchdata.maxprice]);
+      )),
+    [products]
+  );
 
   return (
-    <div className={styles.serchcontainer}>
-      <div >
-        {/* Logo */}
-        <Link href="/" className={styles.logo}>
-          <Image
-            src="/DMTcommerce.png"
-            alt="DMT commerce"
-            width={60}
-            height={45}
-            priority
-          />
+    <Box className={styles.page}>
+      {/* 🔹 Header */}
+      <Box className={styles.header}>
+        <Link href="/">
+          <Image src="/DMTcommerce.png" alt="logo" width={70} height={50} />
         </Link>
-      </div>
-      {/* Search */}
-      <div className={styles.searchpage}>
-        <TextField
-          size="small"
-          placeholder="Search products..."
-          fullWidth
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              if (searchdata.productnamesearch) {
-                handelclicksearch();
-              }
+        <Typography variant="h5" fontWeight="bold">
+          Search Products
+        </Typography>
+      </Box>
+
+      {/* 🔹 Search Card */}
+      <Box className={styles.searchCard}>
+        <Box className={styles.searchRow}>
+          <TextField
+            fullWidth
+            placeholder="Search for products..."
+            onChange={(e) =>
+              setFilters((p) => ({ ...p, q: e.target.value }))
             }
-          }}
-          onChange={(e) => {
-            changestate("productnamesearch", e.target.value);
-          }}
-        />
-        <Button
-          disabled={loading || !searchdata.productnamesearch}
-          variant="contained"
-          onClick={handelclicksearch}
-        >
-          search
-        </Button>
-      </div>
-      {/* search filter */}
+            onKeyDown={(e) => e.key === "Enter" && searchProducts()}
+          />
+          <Button
+            variant="contained"
+            disabled={!filters.q || loading}
+            onClick={searchProducts}
+          >
+            Search
+          </Button>
+        </Box>
 
-      <div className={styles.filtersearch}>
-        <Autocomplete
-          onChange={(event, value) => {
-            changestate("categorysearch", value || "");
-          }}
-          disabled={categoriesloading || !searchdata.productnamesearch}
-          sx={{ width: 700 }}
-          freeSolo
-          id="free-solo-2-demo"
-          disableClearable
-          options={categories.map((option) => option.title)}
-          renderInput={(params) => (
-            <TextField
-              onChange={(e) => {
-                changestate("categorysearch", e.target.value);
-              }}
-              {...params}
-              label="category..."
-              slotProps={{
-                input: {
-                  ...params.InputProps,
-                  type: "search",
-                },
-              }}
-            />
-          )}
-        />
+        {/* 🔹 Filters */}
+        <Box className={styles.filters}>
+          <Autocomplete
+            options={categories}
+            getOptionLabel={(o) => o.title}
+            loading={categoriesLoading}
+            onChange={(e, v) =>
+              setFilters((p) => ({ ...p, category: v ? v.id : "" }))
+            }
+            renderInput={(params) => (
+              <TextField {...params} label="Category" />
+            )}
+          />
 
-        <TextField
-          size="small"
-          placeholder="min price..."
-          type="number"
-          disabled={!searchdata.productnamesearch}
-          fullWidth
-          onChange={(e) => {
-            changestate("minprice", e.target.value);
-          }}
-        />
-        <TextField
-          size="small"
-          placeholder="max price..."
-          type="number"
-          disabled={!searchdata.productnamesearch}
-          fullWidth
-          onChange={(e) => {
-            changestate("maxprice", e.target.value);
-          }}
-        />
-      </div>
-      {/* search result  */}
-      <div>
-        {loading && <div className={styles.loading}>Searching products...</div>}
+          <TextField
+            label="Min Price"
+            type="number"
+            onChange={(e) =>
+              setFilters((p) => ({ ...p, min_price: e.target.value }))
+            }
+          />
 
-        {totalproducts > 0 && (
-          <div className={styles.resultCount}>
-            {totalproducts} products found
-          </div>
+          <TextField
+            label="Max Price"
+            type="number"
+            onChange={(e) =>
+              setFilters((p) => ({ ...p, max_price: e.target.value }))
+            }
+          />
+        </Box>
+      </Box>
+
+      {/* 🔹 Results */}
+      <Box className={styles.results}>
+        {loading && (
+          <Box className={styles.loading}>
+            <CircularProgress size={30} />
+            <Typography>Searching products...</Typography>
+          </Box>
         )}
-        {totalproducts > 0 ? (
-          <div className={styles.productscontainer}>
-            {mappingsearchedproducts}
-          </div>
-        ) : (
-          !loading && <div className={styles.emptyState}>No products found</div>
+
+        {!loading && total > 0 && (
+          <Typography className={styles.count}>
+            {total} products found
+          </Typography>
         )}
-      </div>
-    </div>
+
+        {!loading && total === 0 && filters.q && (
+          <Typography className={styles.empty}>
+            No products found
+          </Typography>
+        )}
+
+        <Box className={styles.productsGrid}>{productList}</Box>
+      </Box>
+    </Box>
   );
 }

@@ -65,6 +65,11 @@ export default function AccountMenu() {
   };
   //   logout
   function logout() {
+    Cookie.remove("ecommercetoken", {
+      path: "/",
+      sameSite: "Lax",
+      secure: false,
+    });
     Cookie.remove("ecommercetoken");
     setuserdata({
       name: "",
@@ -74,8 +79,8 @@ export default function AccountMenu() {
   // login
   function login() {
     setuserdata({
-      name:"",
-      email:""
+      name: "",
+      email: "",
     });
     router.push("/signUp");
   }
@@ -92,7 +97,7 @@ export default function AccountMenu() {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 32, height: 32 }}>
-              {!userdata.name ?"" : userdata.name[0].toUpperCase()}
+              {!userdata.name ? "" : userdata.name[0].toUpperCase()}
             </Avatar>
           </IconButton>
         </Tooltip>
@@ -149,14 +154,20 @@ export default function AccountMenu() {
         </MenuItem>
 
         {!userdata.name && !userdata.email ? (
-          <MenuItem onClick={login}>
+          <MenuItem
+            onClick={login}
+            style={{ background: "#2a7be4", borderRadius: "5px" }}
+          >
             <ListItemIcon>
               <LoginIcon fontSize="small" />
             </ListItemIcon>
             login
           </MenuItem>
         ) : (
-          <MenuItem onClick={logout}>
+          <MenuItem
+            onClick={logout}
+            style={{ background: "#e42a2a", borderRadius: "5px" }}
+          >
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>

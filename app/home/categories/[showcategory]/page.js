@@ -1,14 +1,17 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
-import { useRouter } from "next/navigation";
-import Cookies from "universal-cookie";
+import { useState, useEffect, use, useCallback } from "react";
 import axios from "axios";
-// components
-import Showprojectsofcategory from "./showprojectofcategory";
+import Cookies from "universal-cookie";
+import { useRouter } from "next/navigation";
 
-// mui
+import Productcard from "@/app/component/productcard";
+
+// MUI
 import {
+  Pagination,
+  Typography,
+  Box,
   Button,
   TextField,
   Dialog,
@@ -18,62 +21,114 @@ import {
   DialogContentText,
   CircularProgress,
 } from "@mui/material";
+
+// Icons
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 
-// context
+// Context
 import { useSnackbar } from "@/app/context/snackbarcontext";
 import { NEXT_PUBLIC_API_URL } from "@/app/publicurl/URLbase";
 
+// CSS
+import styles from "./showcategory.module.css";
+
 export default function ShowCategory({ params }) {
+  const { showcategory: categoryId } = use(params);
   const { setshowsnackbar } = useSnackbar();
+
   const router = useRouter();
-  const Cookie = new Cookies();
+  const cookies = new Cookies();
 
-  const { showcategory: categoryId } = use(params); // ✅ unwrapped
-
-  // states
+  // Dialogs
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const [title, setTitle] = useState("");
-  const [image, setImage] = useState(null);
-  const [createddate, setcreateddate] = useState("");
-  const [updateddate, setupdateddate] = useState("");
+  // Data states
+  const [category, setCategory] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
 
+  // Pagination
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+
+  // UI
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
+  const [refresh, setRefresh] = useState(false);
 
-  // fetch category
+  /* ===============================
+     Fetch category + products
+  ================================ */
   useEffect(() => {
-    async function getCategory() {
-      const token = Cookie.get("ecommercetoken");
+    const controller = new AbortController();
+
+    async function fetchData() {
+      setLoading(true);
+      setError("");
+
       try {
         const res = await axios.get(
-          `${NEXT_PUBLIC_API_URL}/api/category/${categoryId}`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          `${NEXT_PUBLIC_API_URL}/api/categories/${categoryId}/products`,
+          {
+            params: { page, per_page: 8 },
+            signal: controller.signal,
+          }
         );
-        console.log(res);
-        setTitle(res.data.title);
-        setImage(res.data.image);
-        setcreateddate(res.data.created_at);
-        setupdateddate(res.data.updated_at);
+
+        setCategory(res.data.category);
+        setProducts(res.data.products?.data ?? []);
+        setLastPage(res.data.products?.last_page ?? 1);
       } catch (err) {
-        setError("Failed to load category.");
-        console.log(err);
+        if (err.name !== "CanceledError") {
+          setError("Failed to load category data");
+          setshowsnackbar({
+            open: true,
+            content: "Failed to load category",
+            type: "error",
+            duration: 3000,
+            vertical: "top",
+            horizontal: "center",
+          });
+        }
       } finally {
         setLoading(false);
       }
     }
-    getCategory();
-  }, [categoryId]);
 
-  // edit
+    fetchData();
+    return () => controller.abort();
+  }, [categoryId, page, refresh, setshowsnackbar]);
+
+  /* ===============================
+     Fetch all categories (once)
+  ================================ */
+  useEffect(() => {
+    axios
+      .get(`${NEXT_PUBLIC_API_URL}/api/allcategories`)
+      .then((res) => setAllCategories(res.data.data ?? []))
+      .catch(() => {});
+  }, []);
+
+  /* ===============================
+     Helpers
+  ================================ */
+  const makeAction = useCallback(() => {
+    setRefresh((prev) => !prev);
+  }, []);
+
+  /* ===============================
+     Edit Category
+  ================================ */
   async function handleEditCategory() {
-    const token = Cookie.get("ecommercetoken");
+    const token = cookies.get("ecommercetoken");
     const formdata = new FormData();
-    formdata.append("title", title);
-    if (image instanceof File) formdata.append("image", image);
+
+    formdata.append("title", category.title);
+    if (category.image instanceof File) {
+      formdata.append("image", category.image);
+    }
 
     try {
       await axios.post(
@@ -85,201 +140,184 @@ export default function ShowCategory({ params }) {
       setshowsnackbar({
         open: true,
         content: "Category updated successfully",
-        duration: 2000,
         type: "success",
+        duration: 2000,
         vertical: "top",
         horizontal: "center",
       });
 
       setEditOpen(false);
-      router.refresh();
-    } catch (err) {
+      setRefresh((p) => !p);
+    } catch {
       setshowsnackbar({
         open: true,
         content: "Update failed",
-        duration: 4000,
         type: "error",
+        duration: 3000,
         vertical: "top",
         horizontal: "center",
       });
     }
   }
 
-  // delete
+  /* ===============================
+     Delete Category
+  ================================ */
   async function handleDeleteCategory() {
-    const token = Cookie.get("ecommercetoken");
+    const token = cookies.get("ecommercetoken");
 
     try {
-      await axios.delete(`${NEXT_PUBLIC_API_URL}/api/category/${categoryId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${NEXT_PUBLIC_API_URL}/api/category/${categoryId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       setshowsnackbar({
         open: true,
         content: "Category deleted",
-        duration: 2000,
         type: "success",
+        duration: 2000,
         vertical: "top",
         horizontal: "center",
       });
 
-      setDeleteOpen(false);
       router.push("/home/categories");
-    } catch (err) {
+    } catch {
       setshowsnackbar({
         open: true,
         content: "Delete failed",
-        duration: 4000,
         type: "error",
+        duration: 3000,
         vertical: "top",
         horizontal: "center",
       });
     }
   }
 
+  /* ===============================
+     Render states
+  ================================ */
   if (loading) {
     return (
-      <div
-        style={{
-          height: "100vh",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <Box className={styles.centered}>
         <CircularProgress />
-      </div>
+      </Box>
     );
   }
 
   if (error) {
+    return <Typography className={styles.errorText}>{error}</Typography>;
+  }
+
+  if (!category) {
     return (
-      <div className="flex-center" style={{ color: "red", fontWeight: "bold" }}>
-        {error}
-      </div>
+      <Typography className={styles.errorText}>
+        Category not found
+      </Typography>
     );
   }
 
   return (
-    <div style={{ height: "100vh" }}>
-      {/* image + title */}
-      <div style={{ height: "45%", position: "relative", borderRadius: "8px" }}>
-        <img
-          src={image instanceof File ? URL.createObjectURL(image) : image}
-          alt={title}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "8px",
-          }}
-          loading="lazy"
-        />
+    <>
+      <Box className={styles.container}>
+        {/* HEADER */}
+        <Box className={styles.header}>
+          <img
+            src={category.image || "/placeholder.jpg"}
+            alt={category.title}
+            className={styles.headerImg}
+            loading="lazy"
+          />
+          <Box className={styles.overlay} />
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background:
-              "linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0))",
-          }}
-        />
+          <Box className={styles.headerText}>
+            <Typography variant="h4" fontWeight="bold">
+              {category.title}
+            </Typography>
 
-        <div
-          style={{
-            zIndex: "10",
-            position: "absolute",
-            bottom: "20px",
-            left: "20px",
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-          }}
-        >
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "15px" }}
-          >
-            <h1
-              style={{
-                color: "white",
-                fontSize: "2rem",
-                fontWeight: "bold",
-                textShadow: "0px 2px 6px rgba(0,0,0,0.6)",
-              }}
-            >
-              {title}
-            </h1>
             <div>
-              <Button onClick={() => setEditOpen(true)} variant="text">
+              <Button onClick={() => setEditOpen(true)}>
                 <EditIcon />
               </Button>
-              <Button
-                onClick={() => setDeleteOpen(true)}
-                variant="text"
-                style={{ color: "#f93c3c" }}
-              >
+              <Button color="error" onClick={() => setDeleteOpen(true)}>
                 <DeleteIcon />
               </Button>
             </div>
-          </div>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
-            <h3 style={{ color: "#fff", textShadow: "0px 0px 10px #000" }}>
-              Created :<span style={{ color: "#18a0e9ff" }}>{createddate}</span>
-            </h3>
-            <h3 style={{ color: "#fff", textShadow: "0px 0px 10px #000" }}>
-              Updated :<span style={{ color: "#18a0e9ff" }}>{updateddate}</span>
-            </h3>
-          </div>
-        </div>
-      </div>
-      <div style={{ marginTop: "20px" }}>
-        <Showprojectsofcategory categoryid={categoryId} />
-      </div>
-      {/* edit dialog */}
+          </Box>
+        </Box>
+
+        {/* PRODUCTS */}
+        <Box className={styles.productsGrid}>
+          {products.length === 0 && (
+            <Typography className={styles.noProducts}>
+              No products in this category
+            </Typography>
+          )}
+
+          {products.map((product) => (
+            <Productcard
+              key={product.id}
+              product={product}
+              categories={allCategories}
+              makeaction={makeAction}
+            />
+          ))}
+        </Box>
+
+        {/* PAGINATION */}
+        {lastPage > 1 && (
+          <Box className={styles.paginationWrapper}>
+            <Pagination
+              count={lastPage}
+              page={page}
+              onChange={(_, value) => setPage(value)}
+            />
+          </Box>
+        )}
+      </Box>
+
+      {/* EDIT DIALOG */}
       <Dialog open={editOpen} onClose={() => setEditOpen(false)}>
         <DialogTitle>Edit Category</DialogTitle>
         <DialogContent>
           <TextField
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            autoFocus
-            required
-            margin="dense"
-            label="Category name"
             fullWidth
             variant="standard"
+            label="Category name"
+            value={category.title}
+            onChange={(e) =>
+              setCategory({ ...category, title: e.target.value })
+            }
           />
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
+            onChange={(e) =>
+              setCategory({ ...category, image: e.target.files[0] })
+            }
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setEditOpen(false)}>Cancel</Button>
-          <Button disabled={!title || loading} onClick={handleEditCategory}>
-            Save
-          </Button>
+          <Button onClick={handleEditCategory}>Save</Button>
         </DialogActions>
       </Dialog>
 
-      {/* delete dialog */}
+      {/* DELETE DIALOG */}
       <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)}>
-        <DialogTitle>Deleting Category</DialogTitle>
+        <DialogTitle>Delete Category</DialogTitle>
         <DialogContent>
-          <DialogContentText>Are you sure?</DialogContentText>
+          <DialogContentText>
+            Are you sure you want to delete this category?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteOpen(false)}>Cancel</Button>
-          <Button
-            style={{ background: "#f52e2e", color: "#fff" }}
-            onClick={handleDeleteCategory}
-          >
+          <Button color="error" onClick={handleDeleteCategory}>
             Confirm
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

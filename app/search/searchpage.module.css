@@ -1,56 +1,59 @@
-.serchcontainer {
-  width: 100%;
+.page {
   padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  max-width: 1200px;
+  margin: auto;
 }
 
-/* Top search */
-.searchpage {
+.header {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-/* Filters */
-.filtersearch {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+.searchCard {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
 }
 
-/* Products grid */
-.productscontainer {
+.searchRow {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filters {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.results {
   margin-top: 20px;
 }
 
-/* Prevent link stretching cards */
-.productscontainer a {
-  width: fit-content;
-  justify-self: center;
-  text-decoration: none;
+.count {
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
-/* Empty state */
-.emptyState {
-  text-align: center;
-  padding: 40px;
-  color: #777;
-  font-size: 14px;
+.productsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
 
 .loading {
-  text-align: center;
-  padding: 30px;
-  color: #555;
-  font-size: 14px;
-}
-.resultCount {
-  font-size: 13px;
-  color: #666;
-  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+.empty {
+  text-align: center;
+  margin-top: 40px;
+  color: #777;
+}

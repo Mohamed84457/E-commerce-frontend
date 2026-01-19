@@ -1,0 +1,82 @@
+.container {
+  padding: 20px;
+}
+
+.centered {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorText {
+  color: red;
+  text-align: center;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.header {
+  position: relative;
+  height: 300px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.headerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.1));
+}
+
+.headerText {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #fff;
+}
+
+.productsGrid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* responsive sizing */
+  gap: 20px;
+}
+
+/* Optional: add spacing for small screens */
+@media (max-width: 768px) {
+  .productsGrid {
+    grid-template-columns: 1fr; /* full width on tablets/small screens */
+    gap: 15px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .productsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); /* medium screens */
+  }
+}
+
+@media (min-width: 1025px) {
+  .productsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); /* large screens */
+  }
+}
+
+
+.noProducts {
+  grid-column: 1/-1;
+  text-align: center;
+}
+
+.paginationWrapper {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}

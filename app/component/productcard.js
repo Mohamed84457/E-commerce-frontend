@@ -1,6 +1,5 @@
 "use client";
 import { useRef, useState } from "react";
-import Image from "next/image";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
